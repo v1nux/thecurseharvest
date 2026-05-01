@@ -5,16 +5,27 @@ public class PropsSpawner : MonoBehaviour
 {
     [Header("Spawn Zone")]
     [SerializeField] private PolygonCollider2D spawnZone;
+    [SerializeField] private string areaId = "Forest";
+
 
     [Header("Props")]
     [SerializeField] private GameObject[] treePrefabs;
     [SerializeField] private GameObject[] stonePrefabs;
     [SerializeField] private GameObject[] vegetationPrefabs;
 
-    [Header("Spawn Count")]
-    [SerializeField] private int treeCount = 15;
-    [SerializeField] private int stoneCount = 20;
-    [SerializeField] private int vegCount = 10;
+    [Header("Density")]
+    [Range(0f, 1f)]
+    [SerializeField] private float treeDensity = 0.3f;
+
+    [Range(0f, 1f)]
+    [SerializeField] private float stoneDensity = 0.2f;
+
+    [Range(0f, 1f)]
+    [SerializeField] private float vegetationDensity = 0.15f;
+
+    [SerializeField] private int maxTreeCount = 40;
+    [SerializeField] private int maxStoneCount = 35;
+    [SerializeField] private int maxVegetationCount = 25;
 
     [Header("Spacing")]
     [SerializeField] private float minDistanceBetweenProps = 1.5f;
@@ -24,54 +35,39 @@ public class PropsSpawner : MonoBehaviour
     [SerializeField] private Transform houseTransform;
     [SerializeField] private float houseRadius = 4f;
 
-    [Header("Chunk Settings")]
+    [Header("Spawn Settings")]
     [SerializeField] private bool spawnOnStart = true;
-    [HideInInspector] public bool hasSpawned = false; // ← must be public
+
+    [HideInInspector] public bool hasSpawned = false;
 
     private List<Vector3> spawnedPositions = new List<Vector3>();
     private List<GameObject> spawnedProps = new List<GameObject>();
+    private List<PropSaveData> propDataList = new List<PropSaveData>();
 
     void Start()
     {
-        if (spawnOnStart)
-            SpawnAll();
+        if (spawnOnStart && !hasSpawned)
+            SpawnNewForest();
     }
 
-    // ── called by ChunkLoader when chunk is enabled ──
-    public void SpawnAll()
+    public void SpawnNewForest()
     {
-        if (hasSpawned) return; // don't spawn twice
+        if (hasSpawned) return;
 
-        SpawnGroup(treePrefabs, treeCount);
-        SpawnGroup(stonePrefabs, stoneCount);
-        SpawnGroup(vegetationPrefabs, vegCount);
+        int treeCount = Mathf.RoundToInt(maxTreeCount * treeDensity);
+        int stoneCount = Mathf.RoundToInt(maxStoneCount * stoneDensity);
+        int vegCount = Mathf.RoundToInt(maxVegetationCount * vegetationDensity);
+
+        SpawnGroup(treePrefabs, treeCount, "Tree");
+        SpawnGroup(stonePrefabs, stoneCount, "Stone");
+        SpawnGroup(vegetationPrefabs, vegCount, "Vegetation");
 
         hasSpawned = true;
     }
 
-    // ── called by ChunkLoader when chunk is disabled ──
-    public void DespawnAll()
+    void SpawnGroup(GameObject[] prefabs, int count, string propType)
     {
-        foreach (GameObject prop in spawnedProps)
-        {
-            if (prop != null)
-                prop.SetActive(false);
-        }
-    }
-
-    // ── called when chunk is re-enabled ──
-    public void ShowAll()
-    {
-        foreach (GameObject prop in spawnedProps)
-        {
-            if (prop != null)
-                prop.SetActive(true);
-        }
-    }
-
-    void SpawnGroup(GameObject[] prefabs, int count)
-    {
-        if (prefabs.Length == 0) return;
+        if (prefabs == null || prefabs.Length == 0) return;
 
         int spawned = 0;
         int attempts = 0;
@@ -86,11 +82,31 @@ public class PropsSpawner : MonoBehaviour
             if (!IsFarEnough(randomPos)) continue;
             if (IsTooCloseToHouse(randomPos)) continue;
 
-            GameObject prefab = prefabs[Random.Range(0, prefabs.Length)];
+            int prefabIndex = Random.Range(0, prefabs.Length);
+            GameObject prefab = prefabs[prefabIndex];
+
+            string id = System.Guid.NewGuid().ToString();
+
             GameObject prop = Instantiate(prefab, randomPos, Quaternion.identity, transform);
 
+            HarvestableProp harvestable = prop.GetComponent<HarvestableProp>();
+            if (harvestable != null)
+                harvestable.Init(id, this);
+
+            PropSaveData data = new PropSaveData()
+            {
+                propId = id,
+                areaId = areaId,
+                propType = propType,
+                prefabIndex = prefabIndex,
+                position = randomPos,
+                destroyed = false
+            };
+
+            propDataList.Add(data);
             spawnedPositions.Add(randomPos);
-            spawnedProps.Add(prop); // track it so we can show/hide later
+            spawnedProps.Add(prop);
+
             spawned++;
         }
     }
@@ -98,9 +114,11 @@ public class PropsSpawner : MonoBehaviour
     Vector3 GetRandomPointInPolygon()
     {
         Bounds bounds = spawnZone.bounds;
+
         float x = Random.Range(bounds.min.x, bounds.max.x);
         float y = Random.Range(bounds.min.y, bounds.max.y);
-        return new Vector3(x, y, 0);
+
+        return new Vector3(x, y, 0f);
     }
 
     bool IsFarEnough(Vector3 pos)
@@ -110,12 +128,122 @@ public class PropsSpawner : MonoBehaviour
             if (Vector3.Distance(pos, existing) < minDistanceBetweenProps)
                 return false;
         }
+
         return true;
     }
 
     bool IsTooCloseToHouse(Vector3 pos)
     {
         if (houseTransform == null) return false;
+
         return Vector3.Distance(pos, houseTransform.position) < houseRadius;
+    }
+
+    public void MarkDestroyed(string propId)
+    {
+        foreach (PropSaveData data in propDataList)
+        {
+            if (data.propId == propId)
+            {
+                data.destroyed = true;
+                break;
+            }
+        }
+
+        if (SaveController.Instance != null)
+            SaveController.Instance.SaveGame();
+    }
+
+    public List<PropSaveData> GetSaveData()
+    {
+        return propDataList;
+    }
+
+    public void LoadFromSave(List<PropSaveData> savedData)
+    {
+        ClearSpawnedProps();
+
+        if (savedData == null || savedData.Count == 0)
+        {
+            SpawnNewForest();
+            return;
+        }
+
+        propDataList = savedData;
+
+        foreach (PropSaveData data in propDataList)
+        {
+            if (data.destroyed) continue;
+
+            GameObject prefab = GetPrefab(data.propType, data.prefabIndex);
+
+            if (prefab == null) continue;
+
+            GameObject prop = Instantiate(prefab, data.position, Quaternion.identity, transform);
+
+            HarvestableProp harvestable = prop.GetComponent<HarvestableProp>();
+            if (harvestable != null)
+                harvestable.Init(data.propId, this);
+
+            spawnedProps.Add(prop);
+            spawnedPositions.Add(data.position);
+        }
+
+        hasSpawned = true;
+    }
+
+    GameObject GetPrefab(string propType, int index)
+    {
+        if (propType == "Tree")
+        {
+            if (index >= 0 && index < treePrefabs.Length)
+                return treePrefabs[index];
+        }
+
+        if (propType == "Stone")
+        {
+            if (index >= 0 && index < stonePrefabs.Length)
+                return stonePrefabs[index];
+        }
+
+        if (propType == "Vegetation")
+        {
+            if (index >= 0 && index < vegetationPrefabs.Length)
+                return vegetationPrefabs[index];
+        }
+
+        return null;
+    }
+
+    void ClearSpawnedProps()
+    {
+        foreach (GameObject prop in spawnedProps)
+        {
+            if (prop != null)
+                Destroy(prop);
+        }
+
+        spawnedProps.Clear();
+        spawnedPositions.Clear();
+        propDataList.Clear();
+        hasSpawned = false;
+    }
+
+    public void DespawnAll()
+    {
+        foreach (GameObject prop in spawnedProps)
+        {
+            if (prop != null)
+                prop.SetActive(false);
+        }
+    }
+
+    public void ShowAll()
+    {
+        foreach (GameObject prop in spawnedProps)
+        {
+            if (prop != null)
+                prop.SetActive(true);
+        }
     }
 }

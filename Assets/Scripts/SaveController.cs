@@ -12,6 +12,7 @@ public class SaveController : MonoBehaviour
     private HotbarControler hotbarController;
     private CinemachineConfiner2D confiner;
     private PlayerStatsManager statsManager;
+    private PropsSpawner[] propsSpawners;
 
     void Awake()
     {
@@ -22,6 +23,7 @@ public class SaveController : MonoBehaviour
         hotbarController = FindObjectOfType<HotbarControler>();
         confiner = FindObjectOfType<CinemachineConfiner2D>();
         statsManager = FindObjectOfType<PlayerStatsManager>();
+        propsSpawners = FindObjectsOfType<PropsSpawner>();
     }
 
     void Start()
@@ -78,6 +80,14 @@ public class SaveController : MonoBehaviour
 
         if (hotbarController != null)
             data.hotbarSaveData = hotbarController.GetHotbarItems();
+
+        data.forestProps.Clear();
+
+        foreach (PropsSpawner spawner in propsSpawners)
+        {
+            if (spawner != null)
+                data.forestProps.AddRange(spawner.GetSaveData());
+        }
 
         File.WriteAllText(saveFilePath, JsonUtility.ToJson(data, true));
 
@@ -142,6 +152,12 @@ public class SaveController : MonoBehaviour
             DayManager.Instance.dayNumber = data.dayNumber;
             DayManager.Instance.seasonIndex = data.seasonIndex;
             DayManager.Instance.UpdateDayUI();
+        }
+
+        foreach (PropsSpawner spawner in propsSpawners)
+        {
+            if (spawner != null)
+                spawner.LoadFromSave(data.forestProps);
         }
 
         Debug.Log("Game Loaded Successfully");
