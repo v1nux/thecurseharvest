@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.InputSystem;
 
-public class hotbarControler : MonoBehaviour
+public class HotbarControler : MonoBehaviour
 {
     public GameObject hotbarPanel;
     public GameObject slotPrefab;

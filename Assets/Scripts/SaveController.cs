@@ -4,86 +4,158 @@ using UnityEngine;
 
 public class SaveController : MonoBehaviour
 {
-
     public static SaveController Instance;
-    private string saveLocation;
+
+    private string saveFilePath;
+
     private InventoryController inventoryController;
-    private hotbarControler hotbarController;
+    private HotbarControler hotbarController;
+    private CinemachineConfiner2D confiner;
     private PlayerStatsManager statsManager;
+
+    void Awake()
+    {
+        Instance = this;
+        saveFilePath = Path.Combine(Application.persistentDataPath, "savegame.json");
+
+        inventoryController = FindObjectOfType<InventoryController>();
+        hotbarController = FindObjectOfType<HotbarControler>();
+        confiner = FindObjectOfType<CinemachineConfiner2D>();
+        statsManager = FindObjectOfType<PlayerStatsManager>();
+    }
 
     void Start()
     {
-        saveLocation = Path.Combine(Application.persistentDataPath, "saveData.json");
-
-        inventoryController = FindObjectOfType<InventoryController>();
-        hotbarController = FindObjectOfType<hotbarControler>();
-        statsManager = FindObjectOfType<PlayerStatsManager>();
         LoadGame();
     }
 
     public void SaveGame()
     {
-        CinemachineConfiner confiner = FindObjectOfType<CinemachineConfiner>();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
 
-        SaveData saveData = new SaveData()
+        if (player == null)
         {
-            playerPosition = GameObject.FindWithTag("Player").transform.position,
-            mapBoundary = confiner.m_BoundingShape2D.gameObject.name,
-            inventorySaveData = inventoryController.GetInventoryItems(),
-            hotbarSaveData = hotbarController.GetHotbarItems(),
+            Debug.LogError("Player not found!");
+            return;
+        }
 
-            health = statsManager.GetHealth(),
-            stamina = statsManager.GetStamina(),
-            maxHealth = statsManager.GetMaxHealth(),
-            maxStamina = statsManager.GetMaxStamina(),
-            level = statsManager.GetLevel(),
-            currentExp = statsManager.GetExp(),
-            expToNextLevel = statsManager.GetExpToNext(),
-            strength = statsManager.GetStrength(),
-            defense = statsManager.GetDefense(),
-            speed = statsManager.GetSpeed()
-        };
+        SaveData data = new SaveData();
 
-        string json = JsonUtility.ToJson(saveData);
-        File.WriteAllText(saveLocation, json);
+        // player
+        data.playerPosition = player.transform.position;
+
+        // stats
+        if (statsManager != null)
+        {
+            data.health = statsManager.GetHealth();
+            data.stamina = statsManager.GetStamina();
+            data.maxHealth = statsManager.GetMaxHealth();
+            data.maxStamina = statsManager.GetMaxStamina();
+            data.level = statsManager.GetLevel();
+            data.currentExp = statsManager.GetExp();
+            data.expToNextLevel = statsManager.GetExpToNext();
+            data.strength = statsManager.GetStrength();
+            data.defense = statsManager.GetDefense();
+            data.speed = statsManager.GetSpeed();
+        }
+
+        // day system
+        if (GameManager.Instance != null)
+        {
+            data.dayNumber = GameManager.Instance.dayNumber;
+            data.seasonIndex = GameManager.Instance.seasonIndex;
+        }
+
+        // map boundary
+        if (confiner != null && confiner.m_BoundingShape2D != null)
+        {
+            data.mapBoundaryName = confiner.m_BoundingShape2D.gameObject.name;
+        }
+
+        // inventory
+        if (inventoryController != null)
+            data.inventorySaveData = inventoryController.GetInventoryItems();
+
+        if (hotbarController != null)
+            data.hotbarSaveData = hotbarController.GetHotbarItems();
+
+        File.WriteAllText(saveFilePath, JsonUtility.ToJson(data, true));
+
+        Debug.Log("Saved to: " + saveFilePath);
     }
 
     public void LoadGame()
     {
-        if (File.Exists(saveLocation))
+        if (!File.Exists(saveFilePath))
         {
-            SaveData saveData = JsonUtility.FromJson<SaveData>(File.ReadAllText(saveLocation));
+            Debug.LogWarning("No save found — creating new one");
+            SaveGame();
+            return;
+        }
 
-            GameObject.FindWithTag("Player").transform.position = saveData.playerPosition;
+        SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(saveFilePath));
 
-            FindObjectOfType<CinemachineConfiner>().m_BoundingShape2D =
-                GameObject.Find(saveData.mapBoundary).GetComponent<PolygonCollider2D>();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
 
-            inventoryController.SetInventoryItems(saveData.inventorySaveData);
-            hotbarController.SetHotbarItems(saveData.hotbarSaveData);
+        if (player != null)
+            player.transform.position = data.playerPosition;
 
-            if (statsManager != null)
+        // boundary
+        if (confiner != null && !string.IsNullOrEmpty(data.mapBoundaryName))
+        {
+            GameObject boundaryObj = GameObject.Find(data.mapBoundaryName);
+
+            if (boundaryObj != null)
             {
-                statsManager.SetMaxHealth(saveData.maxHealth);
-                statsManager.SetMaxStamina(saveData.maxStamina);
-                statsManager.SetHealth(saveData.health);
-                statsManager.SetStamina(saveData.stamina);
-                statsManager.SetLevel(saveData.level);
-                statsManager.SetExp(saveData.currentExp);
-                statsManager.SetExpToNext(saveData.expToNextLevel);
-                statsManager.SetStrength(saveData.strength);
-                statsManager.SetDefense(saveData.defense);
-                statsManager.SetSpeed(saveData.speed);
+                confiner.m_BoundingShape2D =
+                    boundaryObj.GetComponent<PolygonCollider2D>();
+
+                confiner.InvalidateCache();
             }
         }
-        else
+
+        // stats
+        if (statsManager != null)
         {
-            SaveGame();
-            Debug.LogWarning("No save file found, creating a new one.");
+            statsManager.SetMaxHealth(data.maxHealth);
+            statsManager.SetMaxStamina(data.maxStamina);
+            statsManager.SetHealth(data.health);
+            statsManager.SetStamina(data.stamina);
+            statsManager.SetLevel(data.level);
+            statsManager.SetExp(data.currentExp);
+            statsManager.SetExpToNext(data.expToNextLevel);
+            statsManager.SetStrength(data.strength);
+            statsManager.SetDefense(data.defense);
+            statsManager.SetSpeed(data.speed);
         }
+
+        // inventory
+        if (inventoryController != null && data.inventorySaveData != null)
+            inventoryController.SetInventoryItems(data.inventorySaveData);
+
+        if (hotbarController != null && data.hotbarSaveData != null)
+            hotbarController.SetHotbarItems(data.hotbarSaveData);
+
+        // day system
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.dayNumber = data.dayNumber;
+            GameManager.Instance.seasonIndex = data.seasonIndex;
+        }
+
+        Debug.Log("Game Loaded Successfully");
     }
+
     public bool HasSave()
     {
-        return File.Exists(saveLocation);
+        return File.Exists(saveFilePath);
+    }
+
+    public void DeleteSave()
+    {
+        if (File.Exists(saveFilePath))
+            File.Delete(saveFilePath);
+
+        Debug.Log("Save deleted");
     }
 }

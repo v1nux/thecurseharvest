@@ -18,7 +18,6 @@ public class Item : MonoBehaviour
         Weapon
     }
 
-    // for seeds — drag the CropData asset here
     public CropData cropData;
 
     public virtual void UseItem()

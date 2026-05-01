@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,9 +5,10 @@ using UnityEngine;
 public class SaveData
 {
     public Vector3 playerPosition;
-    public string mapBoundary;
-    public List<InventorySaveData> inventorySaveData;
-    public List<InventorySaveData> hotbarSaveData;
+    public string mapBoundaryName = "";
+
+    public List<InventorySaveData> inventorySaveData = new List<InventorySaveData>();
+    public List<InventorySaveData> hotbarSaveData = new List<InventorySaveData>();
 
     // Health & Stamina
     public float health;
@@ -21,7 +21,7 @@ public class SaveData
     public int currentExp = 0;
     public int expToNextLevel = 100;
 
-    // Core Stats
+    // Stats
     public int strength = 5;
     public int defense = 5;
     public float speed = 5f;
@@ -30,4 +30,8 @@ public class SaveData
     public int dayNumber = 1;
     public int seasonIndex = 0;
 
+    // Save metadata
+    public string playerName = "Player";
+    public string lastPlayed = "";
+    public string saveFileName = "";
 }

@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class FarmingSystem : MonoBehaviour
 {
     [SerializeField] private float interactRange = 1.5f;
-    [SerializeField] private hotbarControler hotbar;
+    [SerializeField] private HotbarControler hotbar;
 
     private Camera mainCamera;
     private int selectedSlot = 0;
@@ -13,7 +13,7 @@ public class FarmingSystem : MonoBehaviour
     {
         mainCamera = Camera.main;
         if (hotbar == null)
-            hotbar = FindObjectOfType<hotbarControler>();
+            hotbar = FindObjectOfType<HotbarControler>();
     }
 
     void Update()

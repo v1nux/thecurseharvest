@@ -266,7 +266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 118676936}
   - component: {fileID: 118676938}
-  - component: {fileID: 118676937}
+  - component: {fileID: 118676939}
   m_Layer: 0
   m_Name: HouseWaypoint
   m_TagString: Untagged
@@ -290,23 +290,6 @@ Transform:
   - {fileID: 1202650098}
   m_Father: {fileID: 1587184365}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &118676937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 118676935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28197284e6f17584397f146c31183952, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MapTransition
-  areaBoundary: {fileID: 0}
-  direction: 0
-  TeleportTargetPosition: {fileID: 0}
-  additivePos: 2
-  cmCamObject: {fileID: 0}
 --- !u!61 &118676938
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -353,6 +336,23 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.2041678, y: 0.86382866}
   m_EdgeRadius: 0
+--- !u!114 &118676939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118676935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e11a8a3b374a146b44a6f799303490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapTransition
+  areaBoundary: {fileID: 1581226252}
+  direction: 4
+  TeleportTargetPosition: {fileID: 1202650098}
+  additivePos: 2
+  cmCamObject: {fileID: 1374412914}
 --- !u!1 &136228802
 GameObject:
   m_ObjectHideFlags: 0
@@ -8819,7 +8819,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1374412916}
   - component: {fileID: 1374412915}
-  - component: {fileID: 1374412917}
+  - component: {fileID: 1374412918}
   m_Layer: 0
   m_Name: CmCam
   m_TagString: Untagged
@@ -8882,7 +8882,7 @@ Transform:
   - {fileID: 1422171741}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1374412917
+--- !u!114 &1374412918
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9233,7 +9233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1486722283}
   - component: {fileID: 1486722285}
-  - component: {fileID: 1486722284}
+  - component: {fileID: 1486722286}
   m_Layer: 0
   m_Name: 'MainWaypoint '
   m_TagString: Untagged
@@ -9257,23 +9257,6 @@ Transform:
   - {fileID: 990424545}
   m_Father: {fileID: 1581226251}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1486722284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1486722282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28197284e6f17584397f146c31183952, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MapTransition
-  areaBoundary: {fileID: 0}
-  direction: 0
-  TeleportTargetPosition: {fileID: 0}
-  additivePos: 2
-  cmCamObject: {fileID: 0}
 --- !u!61 &1486722285
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9320,6 +9303,23 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.0273819, y: 1.0221367}
   m_EdgeRadius: 0
+--- !u!114 &1486722286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486722282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e11a8a3b374a146b44a6f799303490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapTransition
+  areaBoundary: {fileID: 1877350646}
+  direction: 4
+  TeleportTargetPosition: {fileID: 990424545}
+  additivePos: 2
+  cmCamObject: {fileID: 1374412914}
 --- !u!1 &1498650211
 GameObject:
   m_ObjectHideFlags: 0
@@ -10607,6 +10607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemDictionary
   itemPrefabs:
   - {fileID: 7214266034832761195, guid: 057c0852f76326f4790fc6a912da1253, type: 3}
+  - {fileID: 1640926643955086293, guid: 06d36bbb97191c8469c1ab2769864f6a, type: 3}
 --- !u!1 &1989472954
 GameObject:
   m_ObjectHideFlags: 0
