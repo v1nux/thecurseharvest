@@ -60,10 +60,10 @@ public class SaveController : MonoBehaviour
         }
 
         // day system
-        if (GameManager.Instance != null)
+        if (DayManager.Instance != null)
         {
-            data.dayNumber = GameManager.Instance.dayNumber;
-            data.seasonIndex = GameManager.Instance.seasonIndex;
+            data.dayNumber = DayManager.Instance.dayNumber;
+            data.seasonIndex = DayManager.Instance.seasonIndex;
         }
 
         // map boundary
@@ -137,10 +137,11 @@ public class SaveController : MonoBehaviour
             hotbarController.SetHotbarItems(data.hotbarSaveData);
 
         // day system
-        if (GameManager.Instance != null)
+        if (DayManager.Instance != null)
         {
-            GameManager.Instance.dayNumber = data.dayNumber;
-            GameManager.Instance.seasonIndex = data.seasonIndex;
+            DayManager.Instance.dayNumber = data.dayNumber;
+            DayManager.Instance.seasonIndex = data.seasonIndex;
+            DayManager.Instance.UpdateDayUI();
         }
 
         Debug.Log("Game Loaded Successfully");
