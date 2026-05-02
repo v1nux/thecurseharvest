@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     private Animator animator;
     private PlayerStatsManager playerStats; // ← add this
-
+    private bool canMove = true;
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -20,6 +20,11 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!canMove)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
         // use speed from stats if available, otherwise use moveSpeed
         float speed = playerStats != null ? playerStats.GetSpeed() : moveSpeed;
         rb.linearVelocity = moveInput * speed;
@@ -31,15 +36,42 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
-        animator.SetBool("isWalking", true);
-        if (context.canceled)
+        if (!canMove)
         {
+            moveInput = Vector2.zero;
             animator.SetBool("isWalking", false);
+            return;
+        }
+
+        moveInput = context.ReadValue<Vector2>();
+
+        animator.SetBool("isWalking", moveInput != Vector2.zero);
+
+        if (moveInput != Vector2.zero)
+        {
+            animator.SetFloat("InputX", moveInput.x);
+            animator.SetFloat("InputY", moveInput.y);
+
             animator.SetFloat("LastInputX", moveInput.x);
             animator.SetFloat("LastInputY", moveInput.y);
         }
-        moveInput = context.ReadValue<Vector2>();
-        animator.SetFloat("InputX", moveInput.x);
-        animator.SetFloat("InputY", moveInput.y);
+    }
+
+   public void PlayAxeAnimation(Vector2 direction)
+    {
+        canMove = false;
+        rb.linearVelocity = Vector2.zero;
+
+        animator.SetBool("isWalking", false);
+        animator.SetFloat("InputX", direction.x);
+        animator.SetFloat("InputY", direction.y);
+        animator.SetTrigger("UseAxe");
+
+        Invoke(nameof(EndToolAnimation), 0.5f);
+    }
+
+    public void EndToolAnimation()
+    {
+        canMove = false;
     }
 }

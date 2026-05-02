@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5268278795585942770}
   - component: {fileID: 5536465687778959485}
+  - component: {fileID: -8539407207813865281}
   m_Layer: 0
   m_Name: Outdoor_Decor_Free_14
   m_TagString: Untagged
@@ -91,3 +92,15 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!225 &-8539407207813865281
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4099138972872216859}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

@@ -1,116 +1,210 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class HotbarControler : MonoBehaviour
 {
+    [Header("Hotbar")]
     public GameObject hotbarPanel;
     public GameObject slotPrefab;
     public int slotCount = 8;
 
+    [Header("Starting Item")]
+    [SerializeField] private GameObject startingAxePrefab;
+
     private ItemDictionary itemDictionary;
-
     private Key[] hotbarKeys;
+    private int selectedSlotIndex = 0;
 
-    public void Awake()
+    void Awake()
     {
         itemDictionary = FindFirstObjectByType<ItemDictionary>();
 
         hotbarKeys = new Key[slotCount];
+
         for (int i = 0; i < slotCount; i++)
         {
-            hotbarKeys[i] = i < 7 ? (Key)((int)Key.Digit1 + i) : Key.Digit0; // Assign keys 1-8 to the hotbar slots
-
+            hotbarKeys[i] = i < 7 ? (Key)((int)Key.Digit1 + i) : Key.Digit0;
         }
     }
 
+    void Start()
+    {
+        CreateSlotsIfMissing();
+        GiveStartingItem();
+        SelectSlot(0);
+    }
 
     void Update()
     {
-        for (int i = 0; i < slotCount; i++) 
+        for (int i = 0; i < slotCount; i++)
         {
             if (Keyboard.current[hotbarKeys[i]].wasPressedThisFrame)
             {
-                UseItemSlot(i);
+                SelectSlot(i);
             }
         }
     }
 
-    void UseItemSlot(int index) 
-    { 
-        Slot slot = hotbarPanel.transform.GetChild(index).GetComponent<Slot>();
-        if(slot.currentItem != null) 
-        {
-            Item item = slot.currentItem.GetComponent<Item>();
-            if (item != null) 
-            {
-                item.UseItem();
-            }
-        }
-    }
-
-     public List<InventorySaveData> GetHotbarItems()
+    void CreateSlotsIfMissing()
     {
-        List<InventorySaveData> hotbarData = new List<InventorySaveData>();
-        foreach (Transform slotTransform in hotbarPanel.transform)
+        if (hotbarPanel == null)
         {
-            Slot slot = slotTransform.GetComponent<Slot>();
-            if (slot == null)
-            {
-                Debug.LogWarning("Missing Slot component on: " + slotTransform.name);
-                continue;
-            }
-
-            if (slot.currentItem != null)
-            {
-                Item item = slot.currentItem.GetComponent<Item>();
-                if (item == null)  // Added: guard against missing Item component
-                {
-                    Debug.LogWarning("Missing Item component on: " + slot.currentItem.name);
-                    continue;
-                }
-
-                hotbarData.Add(new InventorySaveData { itemID = item.ID, slotIndex = slotTransform.GetSiblingIndex() });
-            }
-        }
-        return hotbarData;
-    }
-
-    // fixed � was missing parameter name
-    public void SetHotbarItems(List<InventorySaveData> inventorySaveData)
-    {
-        // clear existing slots
-        foreach (Transform child in hotbarPanel.transform)
-        {
-            Destroy(child.gameObject);
+            Debug.LogError("HotbarPanel is not assigned!");
+            return;
         }
 
-        // create fresh slots
+        if (hotbarPanel.transform.childCount > 0)
+            return;
+
         for (int i = 0; i < slotCount; i++)
         {
             Instantiate(slotPrefab, hotbarPanel.transform);
         }
 
-        // populate slots with saved items
+        Debug.Log("Hotbar slots created.");
+    }
+
+    void GiveStartingItem()
+    {
+        if (hotbarPanel == null) return;
+        if (hotbarPanel.transform.childCount == 0) return;
+
+        Slot firstSlot = hotbarPanel.transform.GetChild(0).GetComponent<Slot>();
+
+        if (firstSlot == null)
+        {
+            Debug.LogError("First hotbar slot has no Slot component!");
+            return;
+        }
+
+        if (firstSlot.currentItem == null && startingAxePrefab != null)
+        {
+            GameObject axe = Instantiate(startingAxePrefab, firstSlot.transform);
+
+            RectTransform rt = axe.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                rt.anchoredPosition = Vector2.zero;
+                rt.localScale = Vector3.one;
+            }
+
+            firstSlot.currentItem = axe;
+        }
+    }
+
+    public void SelectSlot(int index)
+    {
+        selectedSlotIndex = index;
+        HighlightSlot(index);
+
+        Item item = GetSelectedItem();
+        Debug.Log("Equipped: " + (item != null ? item.Name : "None"));
+    }
+
+    public Item GetSelectedItem()
+    {
+        if (hotbarPanel == null) return null;
+        if (selectedSlotIndex >= hotbarPanel.transform.childCount) return null;
+
+        Slot slot = hotbarPanel.transform
+            .GetChild(selectedSlotIndex)
+            .GetComponent<Slot>();
+
+        if (slot == null || slot.currentItem == null)
+            return null;
+
+        return slot.currentItem.GetComponent<Item>();
+    }
+
+    void HighlightSlot(int index)
+    {
+        if (hotbarPanel == null) return;
+
+        for (int i = 0; i < hotbarPanel.transform.childCount; i++)
+        {
+            Image img = hotbarPanel.transform.GetChild(i).GetComponent<Image>();
+
+            if (img != null)
+                img.color = (i == index) ? Color.yellow : Color.white;
+        }
+    }
+
+    public List<InventorySaveData> GetHotbarItems()
+    {
+        List<InventorySaveData> hotbarData = new List<InventorySaveData>();
+
+        if (hotbarPanel == null) return hotbarData;
+
+        foreach (Transform slotTransform in hotbarPanel.transform)
+        {
+            Slot slot = slotTransform.GetComponent<Slot>();
+            if (slot == null) continue;
+
+            if (slot.currentItem != null)
+            {
+                Item item = slot.currentItem.GetComponent<Item>();
+                if (item == null) continue;
+
+                hotbarData.Add(new InventorySaveData
+                {
+                    itemID = item.ID,
+                    slotIndex = slotTransform.GetSiblingIndex()
+                });
+            }
+        }
+
+        return hotbarData;
+    }
+
+    public void SetHotbarItems(List<InventorySaveData> inventorySaveData)
+    {
+        if (inventorySaveData == null || inventorySaveData.Count == 0)
+        {
+            Debug.Log("No saved hotbar data — keeping default hotbar");
+            CreateSlotsIfMissing();
+            GiveStartingItem();
+            SelectSlot(0);
+            return;
+        }
+
+        foreach (Transform child in hotbarPanel.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        for (int i = 0; i < slotCount; i++)
+        {
+            Instantiate(slotPrefab, hotbarPanel.transform);
+        }
+
         foreach (InventorySaveData data in inventorySaveData)
         {
             if (data.slotIndex < slotCount)
             {
                 Slot slot = hotbarPanel.transform
-                            .GetChild(data.slotIndex)
-                            .GetComponent<Slot>();
+                    .GetChild(data.slotIndex)
+                    .GetComponent<Slot>();
 
-                // fixed � was passing data.slotIndex, should be data.itemID
                 GameObject itemPrefab = itemDictionary.GetItemPrefab(data.itemID);
 
                 if (itemPrefab != null)
                 {
                     GameObject item = Instantiate(itemPrefab, slot.transform);
-                    item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                    RectTransform rt = item.GetComponent<RectTransform>();
+                    if (rt != null)
+                    {
+                        rt.anchoredPosition = Vector2.zero;
+                        rt.localScale = Vector3.one;
+                    }
+
                     slot.currentItem = item;
                 }
             }
         }
+
+        SelectSlot(selectedSlotIndex);
     }
 }

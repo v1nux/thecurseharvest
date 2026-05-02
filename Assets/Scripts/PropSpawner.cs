@@ -149,9 +149,6 @@ public class PropsSpawner : MonoBehaviour
                 break;
             }
         }
-
-        if (SaveController.Instance != null)
-            SaveController.Instance.SaveGame();
     }
 
     public List<PropSaveData> GetSaveData()

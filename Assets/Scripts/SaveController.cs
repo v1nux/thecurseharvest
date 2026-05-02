@@ -97,13 +97,11 @@ public class SaveController : MonoBehaviour
     public void LoadGame()
     {
         if (!File.Exists(saveFilePath))
-        {
-            Debug.LogWarning("No save found — creating new one");
-            SaveGame();
-            return;
-        }
-
-        SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(saveFilePath));
+    {
+        Debug.LogWarning("No save found — keeping default scene setup");
+        return;
+    }
+            SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(saveFilePath));
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 

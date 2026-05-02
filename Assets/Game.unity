@@ -9782,6 +9782,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Cinemachine::Cinemachine.CinemachinePipeline
+--- !u!1 &1455195684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1455195686}
+  - component: {fileID: 1455195685}
+  m_Layer: 0
+  m_Name: ItemDictionary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1455195685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455195684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49cffc4c85a4fcd49983204fd3cca305, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDictionary
+  itemPrefabs:
+  - {fileID: 3870636272779850527, guid: 111a4e29025ebea44848ee125949827f, type: 3}
+  - {fileID: 5328139886102811006, guid: d46746c865862944f8d366c9e579bc62, type: 3}
+  - {fileID: 8131897834764890220, guid: a826b453a686df0429561156e3caa22f, type: 3}
+--- !u!4 &1455195686
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455195684}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 23.3993, y: 43.18981, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1460077867
 GameObject:
   m_ObjectHideFlags: 0
@@ -11512,8 +11560,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 75, y: -490}
-  m_SizeDelta: {x: -550, y: -980}
+  m_AnchoredPosition: {x: 41.575012, y: -490}
+  m_SizeDelta: {x: -616.8501, y: -980}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1964364666
 MonoBehaviour:
@@ -11527,6 +11575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46c2ff7690e69c649a6af3ee810bb0bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  startingAxePrefab: {fileID: 3870636272779850527, guid: 111a4e29025ebea44848ee125949827f, type: 3}
   hotbarPanel: {fileID: 1964364664}
   slotPrefab: {fileID: 8017043485835173745, guid: 79ede9f5c83e15046bcf38c355f1ff26, type: 3}
   slotCount: 8
@@ -11569,7 +11618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 0.392}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -131045,3 +131094,4 @@ SceneRoots:
   - {fileID: 1512423406}
   - {fileID: 1595446466}
   - {fileID: 1603834045}
+  - {fileID: 1455195686}
