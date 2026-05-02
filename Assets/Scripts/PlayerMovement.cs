@@ -67,11 +67,12 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("InputY", direction.y);
         animator.SetTrigger("UseAxe");
 
+        CancelInvoke(nameof(EndToolAnimation));
         Invoke(nameof(EndToolAnimation), 0.5f);
     }
 
     public void EndToolAnimation()
     {
-        canMove = false;
+        canMove = true;
     }
 }

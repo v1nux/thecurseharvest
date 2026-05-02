@@ -68,8 +68,11 @@ public class FarmingSystem : MonoBehaviour
                     playerMovement.PlayAxeAnimation(direction);
 
                 prop.HitProp();
-
                 return;
+            }
+            else
+            {
+                Debug.Log("No HarvestableProp found on hit object: " + hit.name);
             }
         }
 
