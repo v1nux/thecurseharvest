@@ -2488,7 +2488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PropsSpawner
   spawnZone: {fileID: 1280515568}
-  areaId: Forest
+  areaId: Main
   treePrefabs:
   - {fileID: 8819860386145485873, guid: 4a0585ba838b71e489d8888320ad9843, type: 3}
   - {fileID: 2822106803916273153, guid: f1070140cd7911141afd2d217f212957, type: 3}
@@ -8164,7 +8164,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -8183,7 +8183,7 @@ PolygonCollider2D:
     - - {x: 76.99031, y: 46.941303}
       - {x: 37.122623, y: 47.233772}
       - {x: 36.78343, y: 10.99242}
-      - {x: 77.437614, y: 11.55439}
+      - {x: 76.84356, y: 10.960329}
   m_UseDelaunayMesh: 1
 --- !u!4 &1141008140
 Transform:
@@ -9143,6 +9143,81 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!1 &1257567917
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1257567918}
+  - component: {fileID: 1257567919}
+  m_Layer: 0
+  m_Name: ForestPropsSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1257567918
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257567917}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 56.49642, y: -12.93891, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1603834045}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1257567919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257567917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ed0e80f15278b046b53b3b832898bdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PropsSpawner
+  spawnZone: {fileID: 1141008139}
+  areaId: Forest
+  treePrefabs:
+  - {fileID: 8819860386145485873, guid: 4a0585ba838b71e489d8888320ad9843, type: 3}
+  - {fileID: 2822106803916273153, guid: f1070140cd7911141afd2d217f212957, type: 3}
+  stonePrefabs:
+  - {fileID: 4472107615559357059, guid: bd49896d25bbe98478068e0046199a26, type: 3}
+  - {fileID: 3248155636812370068, guid: 5de5ac90ab603954e9a24525ee66e11a, type: 3}
+  - {fileID: 2225168720901323840, guid: c6ef46213c7c3854caee43207633aa95, type: 3}
+  - {fileID: 4074579701961885528, guid: fa6a870cd9935874bbba73aa91bd5436, type: 3}
+  - {fileID: 6094988260527495716, guid: fa9484c5fe8174045a9656ae1dd5aaae, type: 3}
+  - {fileID: 5798067473573573145, guid: e629872ec0321c2498fa9474c98196bb, type: 3}
+  vegetationPrefabs:
+  - {fileID: 5161241377996586417, guid: b9809cd7e10f60848b3ae884b3b6d9e7, type: 3}
+  - {fileID: 3752735522669922778, guid: a7c2a78bf798b974284c4a195b65e41c, type: 3}
+  - {fileID: 291573718845504133, guid: 90c2a22230d56ca4db418ac48752c566, type: 3}
+  - {fileID: 8622371674330325958, guid: 05b2ab5995fe9dd4cb9bd2bfe3846137, type: 3}
+  - {fileID: 542662527328260065, guid: 62b0de9834d9a1845bf7fbf5c9ac8e37, type: 3}
+  - {fileID: 7522588562706216151, guid: 16d9226d387d1f04ca70dcad704cdc26, type: 3}
+  treeDensity: 0.3
+  stoneDensity: 0.2
+  vegetationDensity: 0.15
+  maxTreeCount: 40
+  maxStoneCount: 35
+  maxVegetationCount: 25
+  minDistanceBetweenProps: 1.5
+  maxAttempts: 30
+  houseTransform: {fileID: 1126887201}
+  houseRadius: 4
+  spawnOnStart: 1
+  hasSpawned: 0
 --- !u!1 &1259278076
 GameObject:
   m_ObjectHideFlags: 0
@@ -10361,6 +10436,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 606725108}
+  - {fileID: 1257567918}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1668746145
@@ -130957,6 +131033,7 @@ SceneRoots:
   - {fileID: 1374412916}
   - {fileID: 838600269}
   - {fileID: 1280515569}
+  - {fileID: 1141008140}
   - {fileID: 1585815733}
   - {fileID: 1215283446}
   - {fileID: 1870196923}
@@ -130964,4 +131041,3 @@ SceneRoots:
   - {fileID: 1512423406}
   - {fileID: 1595446466}
   - {fileID: 1603834045}
-  - {fileID: 1141008140}
