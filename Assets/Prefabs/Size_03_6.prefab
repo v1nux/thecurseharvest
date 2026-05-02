@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 6334623149211176113}
   - component: {fileID: 6086509976428073058}
   - component: {fileID: 2419364112718279121}
+  - component: {fileID: 363082626015749584}
   - component: {fileID: 6010206374877903600}
   - component: {fileID: 5582853860700059820}
+  - component: {fileID: -2581123519662971326}
   m_Layer: 0
   m_Name: Size_03_6
   m_TagString: Untagged
@@ -124,13 +126,59 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.023535728, y: 0.7341702}
+  m_Size: {x: 2.7583137, y: 4.4265094}
+  m_Direction: 0
+--- !u!61 &363082626015749584
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2822106803916273153}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.0047292113, y: -2.0178342}
-  m_Size: {x: 0.6394584, y: 1.8312254}
-  m_Direction: 0
+  m_Offset: {x: 0.012537539, y: -2.4072204}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3, y: 6}
+    newSize: {x: 3, y: 6}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.64293015, y: 1.1855594}
+  m_EdgeRadius: 0
 --- !u!114 &6010206374877903600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,3 +204,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HarvestableProp
   propId: 36
+--- !u!114 &-2581123519662971326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2822106803916273153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae605d6fac6fad04bb696c314dcebe84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HideWhenBehind
+  fadeAlpha: 0.4

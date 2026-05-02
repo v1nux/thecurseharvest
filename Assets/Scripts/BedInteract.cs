@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Cinemachine;
+using UnityEngine.InputSystem;
 
 public class BedInteract : MonoBehaviour
 {
@@ -42,7 +43,7 @@ public class BedInteract : MonoBehaviour
     {
         if (sleeping) return;
 
-        if (playerInside && Input.GetKeyDown(KeyCode.E))
+        if (playerInside && Keyboard.current.eKey.wasPressedThisFrame)
         {
             if (sleepPromptPanel != null)
                 sleepPromptPanel.SetActive(true);

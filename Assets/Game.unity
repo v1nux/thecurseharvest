@@ -8180,10 +8180,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 76.99031, y: 46.941303}
-      - {x: 37.122623, y: 47.233772}
-      - {x: 36.78343, y: 10.99242}
-      - {x: 76.84356, y: 10.960329}
+    - - {x: 76.524536, y: 47.29523}
+      - {x: 36.32899, y: 47.52802}
+      - {x: 36.12347, y: 11.799513}
+      - {x: 76.65103, y: 11.792643}
   m_UseDelaunayMesh: 1
 --- !u!4 &1141008140
 Transform:
@@ -8951,7 +8951,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1215283446}
   - component: {fileID: 1215283445}
-  - component: {fileID: 1215283444}
+  - component: {fileID: 1215283447}
   m_Layer: 0
   m_Name: Global Light 2D
   m_TagString: Untagged
@@ -8959,18 +8959,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1215283444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1215283443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c44a525d306228439a72cd193152cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!114 &1215283445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9038,6 +9026,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1215283447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215283443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac258db8171c0a440a92242bca6725af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HorrorLight
+  minIntensity: 0.3
+  maxIntensity: 0.6
+  flickerSpeed: 3
+  flickerEnabled: 1
 --- !u!1 &1250118148
 GameObject:
   m_ObjectHideFlags: 0
@@ -9206,10 +9210,10 @@ MonoBehaviour:
   - {fileID: 8622371674330325958, guid: 05b2ab5995fe9dd4cb9bd2bfe3846137, type: 3}
   - {fileID: 542662527328260065, guid: 62b0de9834d9a1845bf7fbf5c9ac8e37, type: 3}
   - {fileID: 7522588562706216151, guid: 16d9226d387d1f04ca70dcad704cdc26, type: 3}
-  treeDensity: 0.3
+  treeDensity: 1
   stoneDensity: 0.2
   vegetationDensity: 0.15
-  maxTreeCount: 40
+  maxTreeCount: 100
   maxStoneCount: 35
   maxVegetationCount: 25
   minDistanceBetweenProps: 1.5
