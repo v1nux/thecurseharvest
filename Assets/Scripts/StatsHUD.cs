@@ -16,7 +16,7 @@ public class StatsHUD : MonoBehaviour
 
     void Start()
     {
-        playerStats = FindObjectOfType<PlayerStatsManager>();
+        playerStats = FindFirstObjectByType<PlayerStatsManager>();
 
         if (playerStats == null)
             Debug.LogError("PlayerStatsManager not found!");

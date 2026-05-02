@@ -18,9 +18,12 @@ public class BedInteract : MonoBehaviour
     private bool playerInside = false;
     private bool sleeping = false;
     private GameObject player;
+    private CinemachineConfiner2D confiner;
 
     void Start()
     {
+        confiner = FindFirstObjectByType<CinemachineConfiner2D>();
+
         if (sleepPromptPanel != null)
             sleepPromptPanel.SetActive(false);
 
@@ -95,7 +98,7 @@ public class BedInteract : MonoBehaviour
         {
             player.transform.position = wakeUpPosition.position;
 
-            var confiner = FindObjectOfType<CinemachineConfiner2D>();
+            var confiner = FindFirstObjectByType<CinemachineConfiner2D>();
             if (confiner != null)
                 confiner.InvalidateCache();
         }

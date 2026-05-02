@@ -15,7 +15,7 @@ public class HotbarControler : MonoBehaviour
 
     public void Awake()
     {
-        itemDictionary = FindObjectOfType<ItemDictionary>();
+        itemDictionary = FindFirstObjectByType<ItemDictionary>();
 
         hotbarKeys = new Key[slotCount];
         for (int i = 0; i < slotCount; i++)
@@ -77,7 +77,7 @@ public class HotbarControler : MonoBehaviour
         return hotbarData;
     }
 
-    // fixed — was missing parameter name
+    // fixed ï¿½ was missing parameter name
     public void SetHotbarItems(List<InventorySaveData> inventorySaveData)
     {
         // clear existing slots
@@ -101,7 +101,7 @@ public class HotbarControler : MonoBehaviour
                             .GetChild(data.slotIndex)
                             .GetComponent<Slot>();
 
-                // fixed — was passing data.slotIndex, should be data.itemID
+                // fixed ï¿½ was passing data.slotIndex, should be data.itemID
                 GameObject itemPrefab = itemDictionary.GetItemPrefab(data.itemID);
 
                 if (itemPrefab != null)

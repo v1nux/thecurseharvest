@@ -163,20 +163,31 @@ public class PropsSpawner : MonoBehaviour
     {
         ClearSpawnedProps();
 
-        if (savedData == null || savedData.Count == 0)
+        List<PropSaveData> myAreaData = new List<PropSaveData>();
+
+        if (savedData != null)
+        {
+            foreach (PropSaveData data in savedData)
+            {
+                if (data.areaId == areaId)
+                    myAreaData.Add(data);
+            }
+        }
+
+        // If this area has no saved props yet, generate new props
+        if (myAreaData.Count == 0)
         {
             SpawnNewForest();
             return;
         }
 
-        propDataList = savedData;
+        propDataList = new List<PropSaveData>(myAreaData);
 
         foreach (PropSaveData data in propDataList)
         {
             if (data.destroyed) continue;
 
             GameObject prefab = GetPrefab(data.propType, data.prefabIndex);
-
             if (prefab == null) continue;
 
             GameObject prop = Instantiate(prefab, data.position, Quaternion.identity, transform);

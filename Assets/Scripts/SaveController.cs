@@ -19,18 +19,18 @@ public class SaveController : MonoBehaviour
         Instance = this;
         saveFilePath = Path.Combine(Application.persistentDataPath, "savegame.json");
 
-        inventoryController = FindObjectOfType<InventoryController>();
-        hotbarController = FindObjectOfType<HotbarControler>();
-        confiner = FindObjectOfType<CinemachineConfiner2D>();
-        statsManager = FindObjectOfType<PlayerStatsManager>();
-        propsSpawners = FindObjectsOfType<PropsSpawner>();
+        inventoryController = FindFirstObjectByType<InventoryController>();
+        hotbarController = FindFirstObjectByType<HotbarControler>();
+        confiner = FindFirstObjectByType<CinemachineConfiner2D>();
+        statsManager = FindFirstObjectByType<PlayerStatsManager>();
+        propsSpawners = FindObjectsByType<PropsSpawner>(FindObjectsSortMode.None);
     }
 
     void Start()
     {
         LoadGame();
     }
-
+    
     public void SaveGame()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");

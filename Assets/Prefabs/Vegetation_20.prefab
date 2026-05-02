@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7238936519361872175}
   - component: {fileID: 4251685316439060007}
   - component: {fileID: 1590290236586817356}
-  - component: {fileID: 5847863646630798107}
-  - component: {fileID: 4891367548424870273}
+  - component: {fileID: 5142371202062850501}
+  - component: {fileID: 6467625526835880268}
   m_Layer: 0
   m_Name: Vegetation_20
   m_TagString: Untagged
@@ -131,7 +131,7 @@ CapsuleCollider2D:
   m_Offset: {x: -0.043442804, y: -0.6076838}
   m_Size: {x: 2.0692723, y: 0.7537799}
   m_Direction: 1
---- !u!114 &5847863646630798107
+--- !u!114 &5142371202062850501
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,10 +140,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3752735522669922778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe96a20dce6e2b241aa5e321dadebcff, type: 3}
+  m_Script: {fileID: 11500000, guid: b5d5c13a0b06eba4eac55c46e1aed413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SortingOrderHandler
---- !u!114 &4891367548424870273
+--- !u!114 &6467625526835880268
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,6 +152,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3752735522669922778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe96a20dce6e2b241aa5e321dadebcff, type: 3}
+  m_Script: {fileID: 11500000, guid: f31f11ab96c34124782762cc8400fe8b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SortingOrderHandler
+  m_EditorClassIdentifier: Assembly-CSharp::HarvestableProp
+  propId: 120

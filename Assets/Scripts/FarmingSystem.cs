@@ -13,7 +13,7 @@ public class FarmingSystem : MonoBehaviour
     {
         mainCamera = Camera.main;
         if (hotbar == null)
-            hotbar = FindObjectOfType<HotbarControler>();
+            hotbar = FindFirstObjectByType<HotbarControler>();
     }
 
     void Update()
