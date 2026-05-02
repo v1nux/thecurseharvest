@@ -10,7 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6115235463041689704}
   - component: {fileID: 4007415021691560278}
-  - component: {fileID: 3020246651929911535}
+  - component: {fileID: 6599204242020133568}
+  - component: {fileID: 5898604027217408461}
+  - component: {fileID: 9047211600311933940}
+  - component: {fileID: 3791861438110050814}
   m_Layer: 0
   m_Name: WoodsDrop
   m_TagString: Untagged
@@ -92,7 +95,43 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &3020246651929911535
+--- !u!58 &6599204242020133568
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5328139886102811006}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.040865064, y: -0.028291225}
+  m_Radius: 0.32822126
+--- !u!114 &5898604027217408461
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,10 +140,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 5328139886102811006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eff7fa9f3ecd7a344be1ca7c6ce2da6e, type: 3}
+  m_Script: {fileID: 11500000, guid: 87c436237e4bbf94b9f2d9de606bfe75, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Item
-  ID: 10
-  Name: Wood
-  itemType: 4
-  cropData: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  itemID: 3
+  amount: 2
+--- !u!114 &9047211600311933940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5328139886102811006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87012f7bad4e71b4fb269c1f033904ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDragHandler
+--- !u!225 &3791861438110050814
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5328139886102811006}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

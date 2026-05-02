@@ -82,8 +82,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1476752335
-  m_SortingLayer: 1
+  m_SortingLayerID: 1975166779
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 225322776, guid: eee0236fece1d974bbc8b4bd9ea6886c, type: 3}
@@ -204,6 +204,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HarvestableProp
   propId: 36
+  hitsToBreak: 3
+  dropItemPrefab: {fileID: 5328139886102811006, guid: d46746c865862944f8d366c9e579bc62, type: 3}
+  dropAmount: 2
 --- !u!114 &-2581123519662971326
 MonoBehaviour:
   m_ObjectHideFlags: 0

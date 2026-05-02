@@ -28,6 +28,7 @@ public class SaveController : MonoBehaviour
 
     void Start()
     {
+        // SaveController.Instance.DeleteSave();
         LoadGame();
     }
     

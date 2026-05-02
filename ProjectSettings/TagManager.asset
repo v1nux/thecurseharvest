@@ -56,6 +56,9 @@ TagManager:
   - name: WalkBehind
     uniqueID: 3697838967
     locked: 0
+  - name: Prop
+    uniqueID: 1975166779
+    locked: 0
   - name: Decor
     uniqueID: 3803474613
     locked: 0

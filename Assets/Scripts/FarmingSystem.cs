@@ -7,7 +7,6 @@ public class FarmingSystem : MonoBehaviour
     [SerializeField] private HotbarControler hotbar;
 
     private Camera mainCamera;
-    private int selectedSlot = 0;
     private PlayerMovement playerMovement;
 
     void Start()
@@ -21,20 +20,14 @@ public class FarmingSystem : MonoBehaviour
 
     void Update()
     {
-        for (int i = 0; i < 8; i++)
-        {
-            Key key = i < 7 ? (Key)((int)Key.Digit1 + i) : Key.Digit0;
-
-            if (Keyboard.current[key].wasPressedThisFrame)
-                selectedSlot = i;
-        }
-
         if (Mouse.current.leftButton.wasPressedThisFrame)
             TryInteract();
     }
 
     void TryInteract()
     {
+        if (hotbar == null) return;
+
         Item equippedItem = hotbar.GetSelectedItem();
         if (equippedItem == null) return;
 
@@ -54,47 +47,41 @@ public class FarmingSystem : MonoBehaviour
         else
             direction = new Vector2(0, Mathf.Sign(direction.y));
 
-        Collider2D hit = Physics2D.OverlapPoint(mouseWorldPos);
-        if (hit == null) return;
+        Collider2D[] hits = Physics2D.OverlapPointAll(mouseWorldPos);
 
         // AXE / TREE
         if (equippedItem.Name == "Axe")
         {
-            HarvestableProp prop = hit.GetComponentInParent<HarvestableProp>();
-
-            if (prop != null)
+            foreach (Collider2D h in hits)
             {
-                if (playerMovement != null)
-                    playerMovement.PlayAxeAnimation(direction);
+                HarvestableProp prop = h.GetComponentInParent<HarvestableProp>();
 
-                prop.HitProp();
-                return;
+                if (prop != null)
+                {
+                    Debug.Log("Found harvestable: " + prop.name);
+
+                    if (playerMovement != null)
+                        playerMovement.PlayAxeAnimation(direction);
+
+                    prop.HitProp();
+                    return;
+                }
             }
-            else
-            {
-                Debug.Log("No HarvestableProp found on hit object: " + hit.name);
-            }
+
+            Debug.Log("No HarvestableProp found where you clicked.");
+            return;
         }
 
         // FARM TILE
-        FarmTile tile = hit.GetComponent<FarmTile>();
-        if (tile != null)
+        foreach (Collider2D h in hits)
         {
-            tile.Interact(equippedItem);
+            FarmTile tile = h.GetComponent<FarmTile>();
+
+            if (tile != null)
+            {
+                tile.Interact(equippedItem);
+                return;
+            }
         }
-    }
-
-    Item GetEquippedItem()
-    {
-        if (hotbar == null) return null;
-        if (selectedSlot >= hotbar.hotbarPanel.transform.childCount) return null;
-
-        Slot slot = hotbar.hotbarPanel.transform
-                    .GetChild(selectedSlot)
-                    .GetComponent<Slot>();
-
-        if (slot == null || slot.currentItem == null) return null;
-
-        return slot.currentItem.GetComponent<Item>();
     }
 }
