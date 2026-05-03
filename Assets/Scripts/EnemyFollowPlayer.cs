@@ -8,11 +8,17 @@ public class EnemyFollowPlayer : MonoBehaviour
     private Transform player;
     private Rigidbody2D rb;
     private Animator animator;
+    private Knockback knockback;
+
+    private float attackCooldown = 1f;
+    private float lastAttackTime;
+    
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        knockback = GetComponent<Knockback>();
     }
 
     void Start()
@@ -23,8 +29,18 @@ public class EnemyFollowPlayer : MonoBehaviour
             player = playerObj.transform;
     }
 
-    void FixedUpdate()
+   void FixedUpdate()
     {
+        if (knockback != null && knockback.IsKnockbacking)
+        {
+            rb.linearVelocity = Vector2.zero;
+
+            if (animator != null)
+                animator.SetBool("isMoving", false);
+
+            return;
+        }
+
         if (player == null) return;
 
         float distance = Vector2.Distance(transform.position, player.position);
@@ -32,17 +48,37 @@ public class EnemyFollowPlayer : MonoBehaviour
         if (distance > stopDistance)
         {
             Vector2 direction = (player.position - transform.position).normalized;
-
             rb.linearVelocity = direction * moveSpeed;
 
-            animator.SetBool("isMoving", true);
-            animator.SetFloat("MoveX", direction.x);
-            animator.SetFloat("MoveY", direction.y);
+            if (animator != null)
+            {
+                animator.SetBool("isMoving", true);
+                animator.SetFloat("MoveX", direction.x);
+                animator.SetFloat("MoveY", direction.y);
+            }
         }
         else
         {
             rb.linearVelocity = Vector2.zero;
-            animator.SetBool("isMoving", false);
+
+            if (animator != null)
+                animator.SetBool("isMoving", false);
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (Time.time - lastAttackTime < attackCooldown) return;
+
+            PlayerStatsManager playerStats = collision.gameObject.GetComponent<PlayerStatsManager>();
+
+            if (playerStats != null)
+            {
+                playerStats.TakeDamage(1);
+                lastAttackTime = Time.time;
+            }
         }
     }
 }

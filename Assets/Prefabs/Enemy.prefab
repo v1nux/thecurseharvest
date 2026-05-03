@@ -14,7 +14,10 @@ GameObject:
   - component: {fileID: 2268007894472880695}
   - component: {fileID: 5247427515896335476}
   - component: {fileID: 6818309319751767581}
-  m_Layer: 0
+  - component: {fileID: -7990386572104461118}
+  - component: {fileID: 8905604139875244854}
+  - component: {fileID: 2794385742406744479}
+  m_Layer: 3
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -81,8 +84,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1476752335
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 5166958929016353594, guid: 1166a67ed52f2324f9a0d9eb2298b933, type: 3}
@@ -156,8 +159,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.044103622, y: -0.8104267}
-  m_Size: {x: 0.9347038, y: 2.166256}
+  m_Offset: {x: -0.044103622, y: -1.142561}
+  m_Size: {x: 0.9347038, y: 1.5019875}
   m_Direction: 0
 --- !u!114 &5247427515896335476
 MonoBehaviour:
@@ -172,6 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   maxHealth: 3
+  damagePopupPrefab: {fileID: 7491470085396794214, guid: 555781217aea1b746950820fca9ce65c, type: 3}
 --- !u!114 &6818309319751767581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,3 +190,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyFollowPlayer
   moveSpeed: 2
   stopDistance: 0.6
+--- !u!114 &-7990386572104461118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6806205655768080404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feedba82a2a6a334e8fe0a23726d9738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitFlash
+  spriteRenderer: {fileID: 8315268049573483844}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.1
+--- !u!95 &8905604139875244854
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6806205655768080404}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c5a068c45e487ec458ef3b3e5e6493df, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2794385742406744479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6806205655768080404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 895fcfd406828994b88e18dffbc1b761, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Knockback
+  knockbackForce: 5
+  knockbackTime: 0.15

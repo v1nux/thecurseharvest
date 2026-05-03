@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class PlayerStatsManager : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class PlayerStatsManager : MonoBehaviour
     [SerializeField] private float staminaRegenRate = 5f;
     [SerializeField] private float staminaRegenDelay = 1f;
     private float staminaRegenTimer = 0f;
+
+    [Header("Damage I-Frames")]
+    [SerializeField] private float invincibleTime = 1f;
+    private bool isInvincible = false;
 
     [Header("Health Regen")]
     [SerializeField] private float healthRegenRate = 2f;
@@ -46,7 +51,6 @@ public class PlayerStatsManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-
     }
 
     void Start()
@@ -63,18 +67,57 @@ public class PlayerStatsManager : MonoBehaviour
         UpdateAllUI();
     }
 
-    // ── called by PlayerMovement ──
+    // ── stamina drain ──
     public void DrainStamina(float amount)
     {
         if (stats.currentStamina <= 0) return;
+
         stats.currentStamina -= amount;
         stats.currentStamina = Mathf.Max(stats.currentStamina, 0);
+
         staminaRegenTimer = staminaRegenDelay;
     }
 
+    // ── damage (FINAL VERSION) ──
+    public void TakeDamage(float amount)
+    {
+        if (isInvincible) return;
+
+        float reduced = Mathf.Max(amount - stats.defense * 0.5f, 1f);
+
+        stats.currentHealth -= reduced;
+        stats.currentHealth = Mathf.Max(stats.currentHealth, 0);
+
+        healthRegenTimer = healthRegenDelay;
+
+        Debug.Log("Player HP: " + stats.currentHealth);
+
+        UpdateAllUI();
+
+        StartCoroutine(InvincibilityFrames());
+
+        if (stats.currentHealth <= 0)
+            Die();
+    }
+
+        private IEnumerator InvincibilityFrames()
+    {
+        isInvincible = true;
+
+        yield return new WaitForSeconds(invincibleTime);
+
+        isInvincible = false;
+    }
+
+    // ── regen ──
     void HandleStaminaRegen()
     {
-        if (staminaRegenTimer > 0) { staminaRegenTimer -= Time.deltaTime; return; }
+        if (staminaRegenTimer > 0)
+        {
+            staminaRegenTimer -= Time.deltaTime;
+            return;
+        }
+
         if (stats.currentStamina < stats.maxStamina)
         {
             stats.currentStamina += staminaRegenRate * Time.deltaTime;
@@ -84,7 +127,12 @@ public class PlayerStatsManager : MonoBehaviour
 
     void HandleHealthRegen()
     {
-        if (healthRegenTimer > 0) { healthRegenTimer -= Time.deltaTime; return; }
+        if (healthRegenTimer > 0)
+        {
+            healthRegenTimer -= Time.deltaTime;
+            return;
+        }
+
         if (stats.currentHealth < stats.maxHealth)
         {
             stats.currentHealth += healthRegenRate * Time.deltaTime;
@@ -92,7 +140,7 @@ public class PlayerStatsManager : MonoBehaviour
         }
     }
 
-    // ── add EXP and check level up ──
+    // ── EXP / Level ──
     public void AddExp(int amount)
     {
         stats.currentExp += amount;
@@ -110,31 +158,21 @@ public class PlayerStatsManager : MonoBehaviour
         stats.level++;
         stats.expToNextLevel = Mathf.RoundToInt(stats.expToNextLevel * 1.5f);
 
-        // boost stats on level up
         stats.strength++;
         stats.defense++;
         stats.speed += 0.2f;
         stats.maxHealth += 10f;
         stats.maxStamina += 5f;
+
         stats.currentHealth = stats.maxHealth;
         stats.currentStamina = stats.maxStamina;
 
         Debug.Log("LEVEL UP! Now level " + stats.level);
+
         UpdateAllUI();
     }
 
-    // ── damage and heal ──
-    public void TakeDamage(float amount)
-    {
-        // reduce by defense
-        float reduced = Mathf.Max(amount - stats.defense * 0.5f, 1f);
-        stats.currentHealth -= reduced;
-        stats.currentHealth = Mathf.Max(stats.currentHealth, 0);
-        healthRegenTimer = healthRegenDelay;
-
-        if (stats.currentHealth <= 0) Die();
-    }
-
+    // ── healing ──
     public void Heal(float amount)
     {
         stats.currentHealth += amount;
@@ -152,30 +190,31 @@ public class PlayerStatsManager : MonoBehaviour
         Debug.Log("Player died!");
     }
 
-    // ── getters for SaveController ──
-    public float GetHealth() { return stats.currentHealth; }
-    public float GetMaxHealth() { return stats.maxHealth; }
-    public float GetStamina() { return stats.currentStamina; }
-    public float GetMaxStamina() { return stats.maxStamina; }
-    public int GetLevel() { return stats.level; }
-    public int GetExp() { return stats.currentExp; }
-    public int GetExpToNext() { return stats.expToNextLevel; }
-    public int GetStrength() { return stats.strength; }
-    public int GetDefense() { return stats.defense; }
-    public float GetSpeed() { return stats.speed; }
+    // ── getters ──
+    public float GetHealth() => stats.currentHealth;
+    public float GetMaxHealth() => stats.maxHealth;
+    public float GetStamina() => stats.currentStamina;
+    public float GetMaxStamina() => stats.maxStamina;
+    public int GetLevel() => stats.level;
+    public int GetExp() => stats.currentExp;
+    public int GetExpToNext() => stats.expToNextLevel;
+    public int GetStrength() => stats.strength;
+    public int GetDefense() => stats.defense;
+    public float GetSpeed() => stats.speed;
 
-    // ── setters for SaveController ──
-    public void SetHealth(float v) { stats.currentHealth = Mathf.Clamp(v, 0, stats.maxHealth); }
-    public void SetStamina(float v) { stats.currentStamina = Mathf.Clamp(v, 0, stats.maxStamina); }
-    public void SetLevel(int v) { stats.level = v; }
-    public void SetExp(int v) { stats.currentExp = v; }
-    public void SetExpToNext(int v) { stats.expToNextLevel = v; }
-    public void SetStrength(int v) { stats.strength = v; }
-    public void SetDefense(int v) { stats.defense = v; }
-    public void SetSpeed(float v) { stats.speed = v; }
-    public void SetMaxHealth(float v) { stats.maxHealth = v; }
-    public void SetMaxStamina(float v) { stats.maxStamina = v; }
+    // ── setters ──
+    public void SetHealth(float v) => stats.currentHealth = Mathf.Clamp(v, 0, stats.maxHealth);
+    public void SetStamina(float v) => stats.currentStamina = Mathf.Clamp(v, 0, stats.maxStamina);
+    public void SetLevel(int v) => stats.level = v;
+    public void SetExp(int v) => stats.currentExp = v;
+    public void SetExpToNext(int v) => stats.expToNextLevel = v;
+    public void SetStrength(int v) => stats.strength = v;
+    public void SetDefense(int v) => stats.defense = v;
+    public void SetSpeed(float v) => stats.speed = v;
+    public void SetMaxHealth(float v) => stats.maxHealth = v;
+    public void SetMaxStamina(float v) => stats.maxStamina = v;
 
+    // ── UI ──
     void UpdateAllUI()
     {
         UpdateHUD();
@@ -184,12 +223,23 @@ public class PlayerStatsManager : MonoBehaviour
 
     void UpdateHUD()
     {
-        if (healthBarHUD != null) healthBarHUD.value = stats.currentHealth / stats.maxHealth;
-        if (staminaBarHUD != null) staminaBarHUD.value = stats.currentStamina / stats.maxStamina;
-        if (healthTextHUD != null) healthTextHUD.text = Mathf.CeilToInt(stats.currentHealth) + "/" + (int)stats.maxHealth;
-        if (staminaTextHUD != null) staminaTextHUD.text = Mathf.CeilToInt(stats.currentStamina) + "/" + (int)stats.maxStamina;
-        if (levelTextHUD != null) levelTextHUD.text = "Lv." + stats.level;
-        if (expBarHUD != null) expBarHUD.value = (float)stats.currentExp / stats.expToNextLevel;
+        if (healthBarHUD != null)
+            healthBarHUD.value = stats.currentHealth / stats.maxHealth;
+
+        if (staminaBarHUD != null)
+            staminaBarHUD.value = stats.currentStamina / stats.maxStamina;
+
+        if (healthTextHUD != null)
+            healthTextHUD.text = Mathf.CeilToInt(stats.currentHealth) + "/" + (int)stats.maxHealth;
+
+        if (staminaTextHUD != null)
+            staminaTextHUD.text = Mathf.CeilToInt(stats.currentStamina) + "/" + (int)stats.maxStamina;
+
+        if (levelTextHUD != null)
+            levelTextHUD.text = "Lv." + stats.level;
+
+        if (expBarHUD != null)
+            expBarHUD.value = (float)stats.currentExp / stats.expToNextLevel;
     }
 
     void UpdateBookPage()

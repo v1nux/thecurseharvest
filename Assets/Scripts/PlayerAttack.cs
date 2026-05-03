@@ -66,12 +66,15 @@ public class PlayerAttack : MonoBehaviour
             enemyLayer
         );
 
-        foreach (Collider2D hit in hits)
+       foreach (Collider2D hit in hits)
         {
             EnemyHealth enemy = hit.GetComponent<EnemyHealth>();
 
             if (enemy != null)
-                enemy.TakeDamage(damage);
+            {
+                Vector2 hitDirection = (hit.transform.position - transform.position).normalized;
+                enemy.TakeDamage(damage, hitDirection);
+            }
         }
     }
 
