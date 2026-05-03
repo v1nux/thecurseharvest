@@ -10,8 +10,8 @@ public class HotbarControler : MonoBehaviour
     public GameObject slotPrefab;
     public int slotCount = 8;
 
-    [Header("Starting Item")]
-    [SerializeField] private GameObject startingAxePrefab;
+    [Header("Starting Items")]
+    [SerializeField] private List<GameObject> startingItemPrefabs;
 
     private ItemDictionary itemDictionary;
     private Key[] hotbarKeys;
@@ -66,31 +66,34 @@ public class HotbarControler : MonoBehaviour
         Debug.Log("Hotbar slots created.");
     }
 
-    void GiveStartingItem()
+   void GiveStartingItem()
     {
         if (hotbarPanel == null) return;
         if (hotbarPanel.transform.childCount == 0) return;
 
-        Slot firstSlot = hotbarPanel.transform.GetChild(0).GetComponent<Slot>();
-
-        if (firstSlot == null)
+        for (int i = 0; i < startingItemPrefabs.Count; i++)
         {
-            Debug.LogError("First hotbar slot has no Slot component!");
-            return;
-        }
+            if (i >= hotbarPanel.transform.childCount) break;
 
-        if (firstSlot.currentItem == null && startingAxePrefab != null)
-        {
-            GameObject axe = Instantiate(startingAxePrefab, firstSlot.transform);
+            Slot slot = hotbarPanel.transform.GetChild(i).GetComponent<Slot>();
 
-            RectTransform rt = axe.GetComponent<RectTransform>();
+            if (slot == null) continue;
+            if (slot.currentItem != null) continue;
+            if (startingItemPrefabs[i] == null) continue;
+
+            GameObject item = Instantiate(startingItemPrefabs[i], slot.transform);
+
+            RectTransform rt = item.GetComponent<RectTransform>();
             if (rt != null)
             {
-                rt.anchoredPosition = Vector2.zero;
+                rt.anchorMin = Vector2.zero;
+                rt.anchorMax = Vector2.one;
+                rt.offsetMin = Vector2.zero;
+                rt.offsetMax = Vector2.zero;
                 rt.localScale = Vector3.one;
             }
 
-            firstSlot.currentItem = axe;
+            slot.currentItem = item;
         }
     }
 
