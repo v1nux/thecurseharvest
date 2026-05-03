@@ -25,8 +25,12 @@ public class HitFlash : MonoBehaviour
 
     IEnumerator FlashRoutine()
     {
-        spriteRenderer.color = flashColor;
+        Debug.Log("Changing color to: " + flashColor);
+
+        spriteRenderer.color = Color.red;
+
         yield return new WaitForSeconds(flashDuration);
+
         spriteRenderer.color = originalColor;
     }
 }

@@ -82,7 +82,7 @@ public class PlayerStatsManager : MonoBehaviour
         staminaRegenTimer = staminaRegenDelay;
     }
 
-   public void TakeDamage(float amount, Transform attacker)
+    public void TakeDamage(float amount, Transform attacker)
     {
         if (isInvincible) return;
 
@@ -93,13 +93,26 @@ public class PlayerStatsManager : MonoBehaviour
 
         healthRegenTimer = healthRegenDelay;
 
+        // HIT FLASH
         if (hitFlash != null)
+        {
+            Debug.Log("FLASH CALLED");
             hitFlash.Flash();
+        }
+        else
+        {
+            Debug.LogWarning("HitFlash is missing on Player");
+        }
 
+        // KNOCKBACK
         if (knockback != null && attacker != null)
         {
             Vector2 direction = (transform.position - attacker.position).normalized;
             knockback.ApplyKnockback(direction);
+        }
+        else
+        {
+            Debug.LogWarning("Knockback missing or attacker missing");
         }
 
         Debug.Log("Player HP: " + stats.currentHealth);
