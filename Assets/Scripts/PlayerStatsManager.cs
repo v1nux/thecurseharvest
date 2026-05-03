@@ -86,6 +86,11 @@ public class PlayerStatsManager : MonoBehaviour
     {
         if (isInvincible) return;
 
+        if (CinemachineObjectShake.Instance != null)
+            CinemachineObjectShake.Instance.Shake(0.5f, 1f);
+        else
+            Debug.LogWarning("No CinemachineObjectShake found");
+
         float reduced = Mathf.Max(amount - stats.defense * 0.5f, 1f);
 
         stats.currentHealth -= reduced;
