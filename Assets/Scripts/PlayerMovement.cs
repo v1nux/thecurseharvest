@@ -11,15 +11,20 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private PlayerStatsManager playerStats; // ← add this
     private bool canMove = true;
+    private Knockback knockback;
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        playerStats = GetComponent<PlayerStatsManager>(); // ← add this
+        playerStats = GetComponent<PlayerStatsManager>(); 
+        knockback = GetComponent<Knockback>();
     }
 
     void FixedUpdate()
     {
+        if (knockback != null && knockback.IsKnockbacking)
+            return;
+
         if (!canMove)
         {
             rb.linearVelocity = Vector2.zero;

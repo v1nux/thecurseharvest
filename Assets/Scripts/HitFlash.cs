@@ -12,7 +12,7 @@ public class HitFlash : MonoBehaviour
     void Awake()
     {
         if (spriteRenderer == null)
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         originalColor = spriteRenderer.color;
     }

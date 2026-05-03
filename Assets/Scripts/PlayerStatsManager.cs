@@ -6,6 +6,8 @@ using System.Collections;
 public class PlayerStatsManager : MonoBehaviour
 {
     public static PlayerStatsManager Instance;
+    private HitFlash hitFlash;
+    private Knockback knockback;
 
     [Header("Stats")]
     public PlayerStatsData stats = new PlayerStatsData();
@@ -51,6 +53,8 @@ public class PlayerStatsManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        hitFlash = GetComponent<HitFlash>();
+        knockback = GetComponent<Knockback>();
     }
 
     void Start()
@@ -78,8 +82,7 @@ public class PlayerStatsManager : MonoBehaviour
         staminaRegenTimer = staminaRegenDelay;
     }
 
-    // ── damage (FINAL VERSION) ──
-    public void TakeDamage(float amount)
+   public void TakeDamage(float amount, Transform attacker)
     {
         if (isInvincible) return;
 
@@ -89,6 +92,15 @@ public class PlayerStatsManager : MonoBehaviour
         stats.currentHealth = Mathf.Max(stats.currentHealth, 0);
 
         healthRegenTimer = healthRegenDelay;
+
+        if (hitFlash != null)
+            hitFlash.Flash();
+
+        if (knockback != null && attacker != null)
+        {
+            Vector2 direction = (transform.position - attacker.position).normalized;
+            knockback.ApplyKnockback(direction);
+        }
 
         Debug.Log("Player HP: " + stats.currentHealth);
 

@@ -76,7 +76,7 @@ public class EnemyFollowPlayer : MonoBehaviour
 
             if (playerStats != null)
             {
-                playerStats.TakeDamage(1);
+                playerStats.TakeDamage(1, transform);
                 lastAttackTime = Time.time;
             }
         }
