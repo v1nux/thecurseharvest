@@ -9965,9 +9965,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemDictionary
   itemPrefabs:
-  - {fileID: 8131897834764890220, guid: a826b453a686df0429561156e3caa22f, type: 3}
   - {fileID: 3870636272779850527, guid: 111a4e29025ebea44848ee125949827f, type: 3}
-  - {fileID: 3042299217772206876, guid: 181901a4f5d4f2842b5d7c45e78518e4, type: 3}
+  - {fileID: 3125489301339327323, guid: 181901a4f5d4f2842b5d7c45e78518e4, type: 3}
 --- !u!4 &1455195686
 Transform:
   m_ObjectHideFlags: 0
@@ -11181,14 +11180,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GridLayoutGroup
   m_Padding:
     m_Left: 0
-    m_Right: 2
+    m_Right: 0
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 5
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 17, y: 20}
-  m_Spacing: {x: -10.76, y: -9.35}
+  m_CellSize: {x: 20, y: 20}
+  m_Spacing: {x: -13, y: -5}
   m_Constraint: 1
   m_ConstraintCount: 6
 --- !u!1 &1838216410

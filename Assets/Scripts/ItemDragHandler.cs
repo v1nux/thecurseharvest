@@ -143,5 +143,11 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             textRT.anchoredPosition = new Vector2(-3, 3);
             textRT.localScale = Vector3.one;
         }
+
+        Item item = itemTransform.GetComponent<Item>();
+        if (item != null)
+        {
+            item.UpdateAmountText();
+        }
     }
 }

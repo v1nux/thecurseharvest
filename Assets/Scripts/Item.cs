@@ -31,8 +31,9 @@ public class Item : MonoBehaviour
     void Awake()
     {
         if (amountText == null)
-            amountText = GetComponentInChildren<TMP_Text>();
+            amountText = GetComponentInChildren<TMP_Text>(true);
 
+        FixAmountText();
         UpdateAmountText();
     }
 
@@ -40,10 +41,34 @@ public class Item : MonoBehaviour
     {
         if (amountText == null) return;
 
-        if (amount > 1)
-            amountText.text = amount.ToString();
-        else
-            amountText.text = "";
+        FixAmountText();
+
+        amountText.text = amount > 1 ? amount.ToString() : "";
+    }
+
+    void FixAmountText()
+    {
+        if (amountText == null) return;
+
+        amountText.gameObject.SetActive(true);
+        amountText.transform.SetAsLastSibling();
+
+        amountText.raycastTarget = false;
+        amountText.enableAutoSizing = false;
+        amountText.fontSize = 18;
+        amountText.alignment = TextAlignmentOptions.BottomRight;
+
+        RectTransform textRT = amountText.GetComponent<RectTransform>();
+
+        textRT.anchorMin = new Vector2(1, 0);
+        textRT.anchorMax = new Vector2(1, 0);
+        textRT.pivot = new Vector2(1, 0);
+
+        textRT.sizeDelta = new Vector2(30, 25);
+        textRT.anchoredPosition = new Vector2(-3, 3);
+
+        textRT.localScale = Vector3.one;
+        textRT.localRotation = Quaternion.identity;
     }
 
     public virtual void UseItem()
