@@ -9841,11 +9841,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cdc916072abaa846b9f7803ecfceae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryController
-  inventoryPanel: {fileID: 1818975581}
+  itemDictionary: {fileID: 1455195685}
+  hotbarPanel: {fileID: 1964364665}
+  backpackPanel: {fileID: 1818975582}
   slotPrefab: {fileID: 2806505796570478444, guid: 898d3631e96588b418056202aca7668f, type: 3}
-  slotCount: 30
-  itemPrefabs:
-  - {fileID: 7214266034832761195, guid: 057c0852f76326f4790fc6a912da1253, type: 3}
+  hotbarSlotCount: 8
+  backpackSlotCount: 24
 --- !u!1 &1422171740
 GameObject:
   m_ObjectHideFlags: 3

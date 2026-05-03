@@ -206,7 +206,7 @@ MonoBehaviour:
   propId: 40
   hitsToBreak: 3
   dropItemPrefab: {fileID: 5328139886102811006, guid: d46746c865862944f8d366c9e579bc62, type: 3}
-  dropAmount: 2
+  dropAmount: 1
 --- !u!114 &-781255420613032762
 MonoBehaviour:
   m_ObjectHideFlags: 0

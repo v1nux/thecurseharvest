@@ -9,16 +9,26 @@ public class WorldItem : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        InventoryController inv = FindFirstObjectByType<InventoryController>();
+        InventoryController inv = InventoryController.Instance;
 
-        if (inv != null)
+        if (inv == null)
         {
-            inv.AddItem(itemID, amount);
+            Debug.LogError("No InventoryController found.");
+            return;
+        }
 
+        bool added = inv.AddItem(itemID, amount);
+
+        if (added)
+        {
             if (PickupUI.Instance != null)
                 PickupUI.Instance.ShowPickup(itemID, amount);
 
             Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("Inventory full. Item was not picked up.");
         }
     }
 }

@@ -28,7 +28,7 @@ public class SaveController : MonoBehaviour
 
     void Start()
     {
-        // SaveController.Instance.DeleteSave();
+        //SaveController.Instance.DeleteSave();
         LoadGame();
     }
     
@@ -76,8 +76,8 @@ public class SaveController : MonoBehaviour
         }
 
         // inventory
-        if (inventoryController != null)
-            data.inventorySaveData = inventoryController.GetInventoryItems();
+        //if (inventoryController != null)
+         //   data.inventorySaveData = inventoryController.GetInventoryItems();
 
         if (hotbarController != null)
             data.hotbarSaveData = hotbarController.GetHotbarItems();
@@ -139,8 +139,8 @@ public class SaveController : MonoBehaviour
         }
 
         // inventory
-        if (inventoryController != null && data.inventorySaveData != null)
-            inventoryController.SetInventoryItems(data.inventorySaveData);
+        //if (inventoryController != null && data.inventorySaveData != null)
+         //   inventoryController.SetInventoryItems(data.inventorySaveData);
 
         if (hotbarController != null && data.hotbarSaveData != null)
             hotbarController.SetHotbarItems(data.hotbarSaveData);
