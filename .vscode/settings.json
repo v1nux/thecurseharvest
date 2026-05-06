@@ -67,5 +67,6 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "TheCurseHarvest.slnx"
+    "dotnet.defaultSolution": "TheCurseHarvest.slnx",
+    "dotnet.preferCSharpExtension": true
 }

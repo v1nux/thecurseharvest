@@ -2,7 +2,6 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
-.vscode
 
 .utmp/
 /[Ll]ibrary/
@@ -99,3 +98,5 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+.vscode/
+ProjectSettings/ShaderGraphSettings.asset
